@@ -16,7 +16,7 @@ class ShoppingList extends Component {
     }
 
     render() {
-        const { items } = this.props.item // this.pros.item comes from index reducer
+        const { items } = this.props.item // this.props.item comes from index reducer
         return(
             <Container>
                 <ListGroup>
