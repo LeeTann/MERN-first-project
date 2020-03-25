@@ -1,17 +1,15 @@
 const express = require('express')
 const mongoose = require('mongoose')
-const bodyParser = require('body-parser')
 const path = require('path')
-
-const items = require('./routes/api/items')
+const config = require('config')
 
 const app = express()
 
 // Bodyparser Middleware
-app.use(bodyParser.json())
+app.use(express.json())
 
 // DB config
-const db = require('./config/keys').mongoURI
+const db = config.get('mongoURI')
 
 // Connect to Mongo
 mongoose
@@ -20,7 +18,8 @@ mongoose
     .catch(err => console.log(err))
 
 // Use Routes
-app.use('/api/items', items)
+app.use('/api/items', require('./routes/api/items'))
+app.use('/api/users', require('./routes/api/users'))
 
 // Server static assets if in production
 if (process.env.NODE_ENV === 'production') {
@@ -32,4 +31,5 @@ if (process.env.NODE_ENV === 'production') {
 
 const port = process.env.PORT || 5000
 
+// Runs server
 app.listen(port, () => console.log(`Server started on port ${port}`))
