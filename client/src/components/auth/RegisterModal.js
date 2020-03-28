@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, NavLink, Alert } from 'reactstrap'
 import { connect } from 'react-redux'
 import { register } from '../../actions/authActions'
+import { clearErrors } from '../../actions/errorActions'
 
 class RegisterModal extends Component {
     state = {
@@ -13,7 +14,8 @@ class RegisterModal extends Component {
     }
 
     componentDidUpdate(prevProps) {
-      const { error } = this.props
+      const { error, isAuthenticated } = this.props
+      // Check if anything has change
       if(error !== prevProps.error) {
         // Check for register error
         if(error.id === 'REGISTER_FAIL') {
@@ -22,9 +24,18 @@ class RegisterModal extends Component {
           this.setState({ msg: null })
         }
       }
+
+      // If modal is open and if authenticated, close modal
+      if(this.state.modal) {
+        if(isAuthenticated) {
+          this.toggle()
+        }
+      }
     }
 
     toggle = () => {
+      // Clear errors
+      this.props.clearErrors()
         this.setState({
             modal: !this.state.modal
         })
@@ -61,7 +72,7 @@ class RegisterModal extends Component {
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>
                     <ModalHeader toggle={this.toggle}>Register</ModalHeader>
                     <ModalBody>
-                      { this.state.msg ? (<Alert>{this.state.msg}</Alert>) : null }
+                      { this.state.msg ? <Alert color="danger">{this.state.msg}</Alert> : null }
                         <Form onSubmit={this.onSubmit}>
                             <FormGroup>
                                 <Label for="name">Name</Label>
@@ -110,4 +121,4 @@ const mapStateToProps = state => ({
     error: state.error
 })
 
-export default connect(mapStateToProps, { register })(RegisterModal)
+export default connect(mapStateToProps, { register, clearErrors })(RegisterModal)

@@ -48,12 +48,18 @@ export const register = ({ name, email, password }) => dispatch => {
       payload: res.data
     }))
     .catch(err => {
-      dispatch(returnErrors(err.response.data, err.response.status, 'REGISTER FAIL'))
+      dispatch(returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL'))
       dispatch({
         type: REGISTER_FAIL
       })
     })
 } 
+
+export const logout = () => {
+  return {
+    type: LOGOUT_SUCCESS
+  }
+}
 
 // Setup config/headers and token
 export const tokenConfig = getState => {
