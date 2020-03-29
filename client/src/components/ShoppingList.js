@@ -24,13 +24,17 @@ class ShoppingList extends Component {
                         {items.map(({ _id, name }) => (
                             <CSSTransition key={_id} timeout={300} classNames="fade">
                                 <ListGroupItem>
-                                    <Button 
-                                        className="remove-btn"
-                                        color="danger"
-                                        size="sm"
-                                        style={{marginRight: '1.5rem'}}
-                                        onClick={this.onDeleteClick.bind(this, _id)}
-                                    >&times;</Button>
+                                  { this.props.isAuthenticated &&
+                                  ( <Button 
+                                      className="remove-btn"
+                                      color="danger"
+                                      size="sm"
+                                      style={{marginRight: '1.5rem'}}
+                                      onClick={this.onDeleteClick.bind(this, _id)}
+                                    >&times;</Button>) 
+
+                                  }
+
                                     {name}
                                 </ListGroupItem>
                             </CSSTransition>         
@@ -48,7 +52,8 @@ ShoppingList.propTypes = {
 }
 
 const mapStateToProps = (state) => ({
-    item: state.item
+    item: state.item,
+    isAuthenticated: state.auth.isAuthenticated
 })
 
 export default connect(mapStateToProps, { getItems, deleteItem })(ShoppingList)
