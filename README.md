@@ -1,1 +1,1 @@
-# MERN-first-project
+# MERN - shopping list
