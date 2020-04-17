@@ -5,7 +5,7 @@ const Schema = mongoose.Schema
 const ItemSchema = new Schema({
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'users'
+        ref: 'user'
     },
     name: {
         type: String,
